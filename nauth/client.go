@@ -16,14 +16,32 @@ import (
 )
 
 type AuthenticationClient struct {
-	options *AuthenticationClientOptions
-	ClientUser *User
-	ClientToken string
+	options     *AuthenticationClientOptions
+	ClientUser  *User
+	AccessToken string
 }
+
+const (
+	ClientSecretPost  = "client_secret_post"
+	ClientSecretBasic = "client_secret_basic"
+	None              = "none"
+)
 
 func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, error) {
 	if options.Host == "" {
 		options.Host = CoreAuthApiHost
+	}
+
+	if options.AppId == "" {
+		return nil, errors.New("AppId is required")
+	}
+
+	if options.Tenant == "" {
+		return nil, errors.New("TenantId is required")
+	}
+
+	if options.AppSecret == "" {
+		return nil, errors.New("AppSecret is required")
 	}
 
 	return &AuthenticationClient{
@@ -33,15 +51,15 @@ func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, err
 
 func (c *AuthenticationClient) SetCurrentUser(user *User) (*User, error) {
 	c.ClientUser = user
-	if len(user.Token) > 0 {
-		c.ClientToken = user.Token
+	if len(user.AccessToken) > 0 {
+		c.AccessToken = user.AccessToken
 	}
 	return user, nil
 }
 
 func (c *AuthenticationClient) GetUserByToken(token string) (*User, error) {
-	c.ClientToken = token
-	body, err := c.SendHttpRequest("/user", http.MethodGet, nil)
+	c.AccessToken = token
+	body, err := c.SendHttpRequest(fmt.Sprintf("/oauth/%s/userinfo", c.options.Tenant), http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -69,8 +87,27 @@ func (c *AuthenticationClient) responseGetUser(b []byte) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	c.SetCurrentUser(&resultUser)
 	return &resultUser, nil
+}
+
+func (c *AuthenticationClient) responseError(body []byte) error {
+	var p fastjson.Parser
+	v, err := p.Parse(string(body))
+	if err != nil {
+		return err
+	}
+
+	if !v.GetBool("status") {
+		msg := v.GetStringBytes("message")
+		if err != nil {
+			return err
+		}
+		return errors.New(string(msg))
+	}
+
+	return nil
 }
 
 func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
@@ -103,15 +140,19 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 	if len(c.options.Tenant) > 0 {
 		req.Header.Add("x-nauth-tenant", c.options.Tenant)
 	}
-	if len(c.ClientToken) > 0 {
-		req.Header.Add("Authorization", "Bearer "+c.ClientToken)
+	if len(c.options.AppId) > 0 {
+		req.Header.Add("x-nauth-app", c.options.AppId)
+	}
+
+	if len(c.AccessToken) > 0 {
+		req.Header.Add("Authorization", "Bearer "+c.AccessToken)
 	}
 
 	for key, value := range commonHeaders {
 		req.Header.Add(key, value)
 	}
 
-	if method == http.MethodPost {
+	if method != http.MethodGet && reqDto != nil {
 		reqData, err := json.Marshal(reqDto)
 		if err != nil {
 			return nil, err
@@ -130,12 +171,13 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-	  return nil, err
+		return nil, err
 	}
 	resp.Body.Close()
-	
+
 	if resp.StatusCode != 200 {
-		return nil, errors.New("http status: "+strconv.FormatInt(int64(resp.StatusCode), 10))
+		fmt.Println(uri)
+		return nil, errors.New("http status: " + strconv.FormatInt(int64(resp.StatusCode), 10))
 	}
 
 	return body, nil

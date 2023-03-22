@@ -1,14 +1,18 @@
 package nauth
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type AuthenticationClientOptions struct {
 	Host      string
 	Tenant    string
-	Secret    string
 	AccessKey string
+	AppId     string
+	AppSecret string
+	RedirectUri string
+	TokenEndPointAuthMethod string
+	Issuer string
 }
 
 type Result struct {
