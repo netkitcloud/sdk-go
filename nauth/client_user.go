@@ -1,17 +1,16 @@
 package nauth
 
 import (
+	"fmt"
 	"net/http"
-)
 
-type UpdateUserProfileDto struct {
-	Nickname string `json:"nickname"`
-}
+	"github.com/netkitcloud/sdk-go/nauth/dto"
+)
 
 // UpdateUserProfile
 // 更新用户信息
-func (c *AuthenticationClient) UpdateUserProfile(dto *UpdateUserProfileDto) error {
-	body, err := c.SendHttpRequest("/user", http.MethodPut, dto)
+func (c *AuthenticationClient) UpdateUserProfile(profile *dto.UpdateUserProfileDto) error {
+	body, err := c.SendHttpRequest("/user", http.MethodPut, profile)
 	if err != nil {
 		return err
 	}
@@ -32,3 +31,11 @@ func (c *AuthenticationClient) UpdateUserPassword(password string) error {
 	return c.responseError(body)
 }
 
+func (c *AuthenticationClient) GetUserByToken(token string) (*dto.User, error) {
+	c.AccessToken = token
+	body, err := c.SendHttpRequest(fmt.Sprintf("/oauth/%s/userinfo", c.options.Tenant), http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+	return c.responseGetUser(body)
+}

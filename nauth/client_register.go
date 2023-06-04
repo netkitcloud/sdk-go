@@ -5,26 +5,15 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/netkitcloud/sdk-go/common"
+	"github.com/netkitcloud/sdk-go/nauth/dto"
+
 	"github.com/valyala/fastjson"
 )
 
-type PhoneCodeRequestDtto struct {
-	Phone string `json:"phone"`
-}
-
-type PhoneCodeRegisterDto struct {
-	Phone string `json:"phone"`
-	Code  int `json:"code"`
-}
-
-type UsernameRegisterDto struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
 // RegisterByUsername
 // 使用用户名密码注册
-func (c *AuthenticationClient) RegisterByUsername(dto *UsernameRegisterDto) error {
+func (c *AuthenticationClient) RegisterByUsername(dto *dto.UsernameRegisterDto) error {
 	body, err := c.SendHttpRequest("/register/username", http.MethodPost, dto)
 	if err != nil {
 		return err
@@ -49,7 +38,7 @@ func (c *AuthenticationClient) RegisterByUsername(dto *UsernameRegisterDto) erro
 
 // RegisterByPhoneCode
 // 使用用户名密码注册
-func (c *AuthenticationClient) RegisterByPhoneCode(dto *PhoneCodeRegisterDto) error {
+func (c *AuthenticationClient) RegisterByPhoneCode(dto *dto.PhoneCodeRegisterDto) error {
 	body, err := c.SendHttpRequest("/register/phone", http.MethodPost, dto)
 	if err != nil {
 		return err
@@ -74,7 +63,7 @@ func (c *AuthenticationClient) RegisterByPhoneCode(dto *PhoneCodeRegisterDto) er
 
 // SendRegisterPhoneCode
 // 发送手机注册验证码
-func (c *AuthenticationClient) SendRegisterPhoneCode(phone string) (*Result, error) {
+func (c *AuthenticationClient) SendRegisterPhoneCode(phone string) (*common.BaseResponse, error) {
 	body, err := c.SendHttpRequest("/register/getsms", http.MethodPost, map[string]interface{}{
 		"phone": phone,
 	})
@@ -82,7 +71,7 @@ func (c *AuthenticationClient) SendRegisterPhoneCode(phone string) (*Result, err
 		return nil, err
 	}
 
-	var result Result
+	var result common.BaseResponse
 	if err := json.Unmarshal(body, &result); err != nil {
 		return nil, err
 	}

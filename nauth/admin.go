@@ -8,105 +8,40 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"net/http"
+	"net/url"
 	"strconv"
 	"time"
 
-	"net/http"
-	"net/url"
-
 	"github.com/netkitcloud/sdk-go/common"
 	"github.com/netkitcloud/sdk-go/nauth/dto"
-
-	"github.com/valyala/fastjson"
 )
 
-type AuthenticationClient struct {
+type AuthenticationAdmin struct {
 	options     *AuthenticationClientOptions
 	ClientUser  *dto.User
 	AccessToken string
 }
 
-const (
-	ClientSecretPost  = "client_secret_post"
-	ClientSecretBasic = "client_secret_basic"
-	None              = "none"
-)
-
-func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, error) {
+func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error) {
 	if options.Host == "" {
 		options.Host = CoreAuthApiHost
 	}
 
-	if options.AppId == "" {
-		return nil, errors.New("AppId is required")
-	}
-
 	if options.Tenant == "" {
-		return nil, errors.New("TenantId is required")
+		return nil, errors.New("tenantId is required")
 	}
 
-	if options.AppSecret == "" {
-		return nil, errors.New("AppSecret is required")
+	if options.Secret == "" {
+		return nil, errors.New("secret is required")
 	}
 
-	return &AuthenticationClient{
+	return &AuthenticationAdmin{
 		options: options,
 	}, nil
 }
 
-func (c *AuthenticationClient) SetCurrentUser(user *dto.User) (*dto.User, error) {
-	c.ClientUser = user
-	if len(user.AccessToken) > 0 {
-		c.AccessToken = user.AccessToken
-	}
-	return user, nil
-}
-
-func (c *AuthenticationClient) responseGetUser(b []byte) (*dto.User, error) {
-	var p fastjson.Parser
-	v, err := p.Parse(string(b))
-	if err != nil {
-		return nil, err
-	}
-
-	if !v.GetBool("status") {
-		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
-		return nil, errors.New(string(msg))
-	}
-
-	byteUser := v.GetObject("data").MarshalTo(nil)
-	resultUser := dto.User{}
-	err = json.Unmarshal(byteUser, &resultUser)
-	if err != nil {
-		return nil, err
-	}
-
-	c.SetCurrentUser(&resultUser)
-	return &resultUser, nil
-}
-
-func (c *AuthenticationClient) responseError(body []byte) error {
-	var p fastjson.Parser
-	v, err := p.Parse(string(body))
-	if err != nil {
-		return err
-	}
-
-	if !v.GetBool("status") {
-		msg := v.GetStringBytes("message")
-		if err != nil {
-			return err
-		}
-		return errors.New(string(msg))
-	}
-
-	return nil
-}
-
-func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
+func (c *AuthenticationAdmin) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
 	data, _ := json.Marshal(&reqDto)
 
 	req, err := http.NewRequest(method, c.options.Host+requestUrl, nil)
@@ -137,7 +72,7 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 	rand.Seed(time.Now().UnixNano())
 	req.Header.Add("x-n-nonce", strconv.FormatInt(int64(rand.Intn(100000000)), 16))
 
-	if method == http.MethodGet {
+	if method == http.MethodGet || reqDto == nil {
 		variables := make(map[string]interface{})
 		json.Unmarshal(data, &variables)
 
@@ -149,7 +84,7 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 			req.URL.RawQuery = querys.Encode()
 		}
 
-		sig := common.SignatureRequestGet(req, querys, []byte(c.options.AppSecret))
+		sig := common.SignatureRequestGet(req, querys, []byte(c.options.Secret))
 		req.Header.Add("x-n-signature", sig)
 
 	} else if method != http.MethodGet && reqDto != nil {
@@ -158,6 +93,8 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 			return nil, err
 		}
 		req.Body = ioutil.NopCloser(bytes.NewReader(reqData))
+		sig := common.SignatureRequestBody(req, reqDto, []byte(c.options.Secret))
+		req.Header.Add("x-n-signature", sig)
 	}
 
 	client := &http.Client{

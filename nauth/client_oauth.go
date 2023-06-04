@@ -12,17 +12,8 @@ import (
 	"strings"
 
 	"github.com/coreos/go-oidc/v3/oidc"
+	"github.com/netkitcloud/sdk-go/nauth/dto"
 )
-
-type OIDCTokenResponse struct {
-	AccessToken      string `json:"access_token,omitempty"`
-	IDToken          string `json:"id_token,omitempty"`
-	RefreshToken     string `json:"refresh_token,omitempty"` //可选
-	ExpiresIn        uint64 `json:"expires_in,omitempty"`
-	TokenType        string `json:"token_type,omitempty"`
-	Error            string `json:"error,omitempty"`
-	ErrorDescription string `json:"error_description,omitempty"`
-}
 
 func (c *AuthenticationClient) getSignature(dto map[string]string) string {
 	var keys []string
@@ -41,20 +32,19 @@ func (c *AuthenticationClient) getSignature(dto map[string]string) string {
 }
 
 func (c *AuthenticationClient) GetOAuthLoginUrl(state string) string {
-	return fmt.Sprintf("%s/oauth/%s/authorize?appid=%s&state=%s&response_type=code", 
+	return fmt.Sprintf("%s/oauth/%s/authorize?appid=%s&state=%s&response_type=code",
 		c.options.Host, c.options.Tenant, c.options.AppId, state)
 }
 
-func (c *AuthenticationClient) GetAccessTokenByCode(code string) (OIDCTokenResponse, error) {
+func (c *AuthenticationClient) GetAccessTokenByCode(code string) (tokenResponse dto.OIDCTokenResponse, err error) {
 	dto := map[string]string{
-		"grant_type":    "authorization_code",
-		"code":          code,
-		"appid": 	   c.options.AppId,
+		"grant_type": "authorization_code",
+		"code":       code,
+		"appid":      c.options.AppId,
 	}
 
 	dto["signature"] = c.getSignature(dto)
 
-	var tokenResponse OIDCTokenResponse
 	resp, err := c.SendHttpRequest("/login/username", http.MethodGet, dto)
 	if err != nil {
 		return tokenResponse, err
@@ -67,7 +57,7 @@ func (c *AuthenticationClient) Verify(token string) bool {
 	// 创建一个context
 	ctx := context.Background()
 	// 创建一个oidc provider，传入issuer的URL
-	provider, err := oidc.NewProvider(ctx, fmt.Sprintf(c.options.Host + "/oauth/%s", c.options.Tenant))
+	provider, err := oidc.NewProvider(ctx, fmt.Sprintf(c.options.Host+"/oauth/%s", c.options.Tenant))
 	if err != nil {
 		// 处理错误
 		fmt.Println(err)
@@ -75,10 +65,10 @@ func (c *AuthenticationClient) Verify(token string) bool {
 	}
 
 	verifier := provider.Verifier(&oidc.Config{
-		ClientID: c.options.AppId,
-		SkipIssuerCheck: false,
+		ClientID:          c.options.AppId,
+		SkipIssuerCheck:   false,
 		SkipClientIDCheck: false,
-		SkipExpiryCheck: false,
+		SkipExpiryCheck:   false,
 	})
 	_, err = verifier.Verify(ctx, token)
 	if err != nil {
