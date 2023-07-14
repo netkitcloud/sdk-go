@@ -25,7 +25,8 @@ type User struct {
 	Email       string `json:"email,omitempty"`
 	Phone       string `json:"phone,omitempty"`
 	AccessToken string `json:"access_token,omitempty"`
-	UpdatedAt   string `json:"updatedat,omitempty"`
+	UpdatedAt   string `json:"updatedAt,omitempty"`
+	CrateddAt   string `json:"createdAt,omitempty"`
 	UserProfile
 }
 
