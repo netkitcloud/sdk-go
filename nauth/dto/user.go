@@ -3,7 +3,7 @@ package dto
 import "github.com/netkitcloud/sdk-go/common"
 
 type UpdateUserProfileDto struct {
-	Nickname string `json:"nickname"`
+	UserProfile
 }
 
 type UserProfile struct {
