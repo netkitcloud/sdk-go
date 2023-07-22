@@ -58,3 +58,9 @@ type GetUserResponseDto struct {
 	common.BaseResponse
 	Data User
 }
+
+type UpdatePasswordDto struct {
+	Password    string `json:"password,omitempty"`
+	NewPassword string `json:"new_password,omitempty"`
+	RePassword  string `json:"re_password,omitempty"`
+}

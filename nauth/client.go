@@ -54,6 +54,10 @@ func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, err
 	}, nil
 }
 
+func (c *AuthenticationClient) SetToken(token string) {
+	c.AccessToken = token
+}
+
 func (c *AuthenticationClient) SetCurrentUser(user *dto.User) (*dto.User, error) {
 	c.ClientUser = user
 	if len(user.AccessToken) > 0 {
