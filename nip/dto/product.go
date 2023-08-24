@@ -10,7 +10,7 @@ type CreateProductDto struct {
 	Protocol    string `json:"protocol" validate:"required"`
 	DataFormat  string `json:"data_format" validate:"required"`
 	NodeType    int    `json:"node_type"  validate:"min=0,max=3"`
-	Name        string `json:"name" validate:"required,min=3,max=30"`
+	Name        string `json:"name" validate:"required,min=1,max=30"`
 	Classify    string `json:"product_type"`
 	Description string `json:"description"`
 	Network     string `json:"network"`
@@ -18,7 +18,7 @@ type CreateProductDto struct {
 
 type UpdateProductDto struct {
 	ProductKey  string `json:"productkey" validate:"required"`
-	Name        string `json:"name" validate:"required,min=3,max=30"`
+	Name        string `json:"name" validate:"required,min=1,max=30"`
 	Protocol    string `json:"protocol" validate:"required"`
 	DataFormat  string `json:"data_format" validate:"required"`
 	Classify    string `json:"product_type"`

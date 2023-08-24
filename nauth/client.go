@@ -61,7 +61,7 @@ func (c *AuthenticationClient) SetToken(token string) {
 func (c *AuthenticationClient) SetCurrentUser(user *dto.User) (*dto.User, error) {
 	c.ClientUser = user
 	if len(user.AccessToken) > 0 {
-		c.AccessToken = user.AccessToken
+		c.SetToken(user.AccessToken)
 	}
 	return user, nil
 }

@@ -3,7 +3,6 @@ package nauth
 type AuthenticationClientOptions struct {
 	Host                    string
 	Tenant                  string
-	AccessKey               string
 	Secret                  string
 	AppId                   string
 	AppSecret               string
