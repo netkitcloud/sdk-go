@@ -15,7 +15,7 @@ func (cli *AuthenticationAdmin) GetAccessKey(accessKey string) (*dto.AccessKey, 
 		return nil, errors.New("accessKey is required")
 	}
 
-	uri := fmt.Sprintf("/accesskey/%s", accessKey)
+	uri := fmt.Sprintf("/admin/accesskey/%s", accessKey)
 	body, err := cli.SendHttpRequest(uri, http.MethodGet, nil)
 	if err != nil {
 		return nil, err
