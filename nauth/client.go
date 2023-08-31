@@ -5,16 +5,11 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
-	"math/rand"
 	"strconv"
-	"time"
 
 	"net/http"
-	"net/url"
 
-	"github.com/netkitcloud/sdk-go/common"
 	"github.com/netkitcloud/sdk-go/nauth/dto"
 
 	"github.com/valyala/fastjson"
@@ -111,8 +106,6 @@ func (c *AuthenticationClient) responseError(body []byte) error {
 }
 
 func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
-	data, _ := json.Marshal(&reqDto)
-
 	req, err := http.NewRequest(method, c.options.Host+requestUrl, nil)
 	if err != nil {
 		return nil, err
@@ -136,10 +129,6 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 	for key, value := range commonHeaders {
 		req.Header.Add(key, value)
 	}
-
-	req.Header.Add("x-n-ts", strconv.FormatInt(time.Now().Unix(), 10))
-	rand.Seed(time.Now().UnixNano())
-	req.Header.Add("x-n-nonce", strconv.FormatInt(int64(rand.Intn(100000000)), 16))
 
 	if method != http.MethodGet && reqDto != nil {
 		reqData, err := json.Marshal(reqDto)
