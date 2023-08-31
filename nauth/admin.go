@@ -60,10 +60,6 @@ func (c *AuthenticationAdmin) SendHttpRequest(requestUrl string, method string, 
 		req.Header.Add("x-nauth-app", c.options.AppId)
 	}
 
-	if len(c.AccessToken) > 0 {
-		req.Header.Add("Authorization", "Bearer "+c.AccessToken)
-	}
-
 	for key, value := range commonHeaders {
 		req.Header.Add(key, value)
 	}

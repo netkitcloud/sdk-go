@@ -141,22 +141,7 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 	rand.Seed(time.Now().UnixNano())
 	req.Header.Add("x-n-nonce", strconv.FormatInt(int64(rand.Intn(100000000)), 16))
 
-	if method == http.MethodGet {
-		variables := make(map[string]interface{})
-		json.Unmarshal(data, &variables)
-
-		querys := url.Values{}
-		if len(variables) > 0 {
-			for key, value := range variables {
-				querys.Set(key, fmt.Sprintf("%v", value))
-			}
-			req.URL.RawQuery = querys.Encode()
-		}
-
-		sig := common.SignatureRequestGet(req, querys, []byte(c.options.AppSecret))
-		req.Header.Add("x-n-signature", sig)
-
-	} else if method != http.MethodGet && reqDto != nil {
+	if method != http.MethodGet && reqDto != nil {
 		reqData, err := json.Marshal(reqDto)
 		if err != nil {
 			return nil, err
