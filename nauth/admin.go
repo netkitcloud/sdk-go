@@ -20,7 +20,6 @@ import (
 type AuthenticationAdmin struct {
 	options     *AuthenticationClientOptions
 	ClientUser  *dto.User
-	AccessToken string
 }
 
 func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error) {
