@@ -1,7 +1,7 @@
 package common
 
 type BaseResponse struct {
-	Code    int    `json:"code,omitempty"`
+	Code    int    `json:"code"`
 	Status  bool   `json:"status,omitempty"`
 	Message string `json:"message,omitempty"`
 }
