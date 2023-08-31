@@ -5,16 +5,13 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"strconv"
 	"time"
 
 	"net/http"
-	"net/url"
 
-	"github.com/netkitcloud/sdk-go/common"
 	"github.com/netkitcloud/sdk-go/nauth/dto"
 
 	"github.com/valyala/fastjson"
@@ -111,8 +108,6 @@ func (c *AuthenticationClient) responseError(body []byte) error {
 }
 
 func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
-	data, _ := json.Marshal(&reqDto)
-
 	req, err := http.NewRequest(method, c.options.Host+requestUrl, nil)
 	if err != nil {
 		return nil, err
