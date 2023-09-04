@@ -25,6 +25,7 @@ const (
 	ClientSecretPost  = "client_secret_post"
 	ClientSecretBasic = "client_secret_basic"
 	None              = "none"
+	CurrentUserToken  = "UserToken"
 )
 
 func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, error) {
@@ -49,8 +50,12 @@ func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, err
 	}, nil
 }
 
-func (c *AuthenticationClient) SetToken(token string) {
+func (c *AuthenticationClient) SetToken(token string) error {
+	if token == "" {
+		return errors.New("token cannot be empty")
+	}
 	c.AccessToken = token
+	return nil
 }
 
 func (c *AuthenticationClient) SetCurrentUser(user *dto.User) (*dto.User, error) {
@@ -158,4 +163,22 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 	}
 
 	return body, nil
+}
+
+// TO USE: cli.NewClientWithToken(token).AddAccessKey
+// 根据token新建一个客户端示例
+func (c *AuthenticationClient) NewClientWithToken(token string) *AuthenticationClient {
+	if token == "" {
+		return nil
+	}
+	options := *c.options
+	newClinet, err := NewClient(&options)
+	if err != nil {
+		return nil
+	}
+	err = newClinet.SetToken(token)
+	if err != nil {
+		return nil
+	}
+	return newClinet
 }
