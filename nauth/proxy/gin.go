@@ -20,21 +20,21 @@ type ProxyFunc interface {
 type ActionFuncMap[KEY Action, VALUE NormalProxyFunc] map[KEY]VALUE
 
 const (
-	AddAccessKey    Action = "AddAccessKey"
-	GetAccessKey    Action = "GetAccessKey"
-	DeleteAccessKey Action = "DeleteAccessKey"
-	UpdateAccessKey Action = "UpdateAccessKey"
-	ListAccessKeys  Action = "ListAccessKeys"
-	ResetAccessKey  Action = "ResetAccessKey"
+	GetAccessKey           Action = "GetAccessKey"
+	DeleteAccessKey        Action = "DeleteAccessKey"
+	ListAccessKeys         Action = "ListAccessKeys"
+	ResetAccessKey         Action = "ResetAccessKey"
+	AddAccessKeyComment    Action = "AddAccessKeyComment"
+	UpdateAccessKeyComment Action = "UpdateAccessKeyComment"
 )
 
 var ActionFunc ActionFuncMap[Action, NormalProxyFunc] = map[Action]NormalProxyFunc{
-	AddAccessKey:    ginAddAccessKey,
-	GetAccessKey:    ginGetAccessKey,
-	DeleteAccessKey: ginDeleteAccessKey,
-	UpdateAccessKey: ginUpdateAccessKey,
-	ListAccessKeys:  ginListAccessKey,
-	ResetAccessKey:  ginResetAccessKey,
+	GetAccessKey:           ginGetAccessKey,
+	DeleteAccessKey:        ginDeleteAccessKey,
+	ListAccessKeys:         ginListAccessKey,
+	ResetAccessKey:         ginResetAccessKey,
+	AddAccessKeyComment:    ginAddAccessKeyComment,
+	UpdateAccessKeyComment: ginUpdateAccessKeyComment,
 }
 
 func GinRouterClientProxy(action Action, options *nauth.AuthenticationClientOptions) func(*gin.Context) {

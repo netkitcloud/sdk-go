@@ -10,10 +10,10 @@ import (
 	"github.com/netkitcloud/sdk-go/response"
 )
 
-// @description: 创建用户的ak
+// @description: 创建用户的ak以及备注
 // @Param body dto.AddAccessKeyDto true "创建用户ak的备注"
 // @Router /accesskey/comment [post]
-func ginAddAccessKey(c *gin.Context, cli *nauth.AuthenticationClient) {
+func ginAddAccessKeyComment(c *gin.Context, cli *nauth.AuthenticationClient) {
 	// 获取并绑定请求参数
 	params := new(dto.AddAccessKeyDto)
 	if err := c.ShouldBindJSON(params); err != nil {
@@ -61,7 +61,7 @@ func ginDeleteAccessKey(c *gin.Context, cli *nauth.AuthenticationClient) {
 // @description: 更新用户指定ak的comment备注
 // @Param body dto.AddAccessKeyDto true "更新用户ak的备注"
 // @Router /accesskey/:queryKey/comment [PUT]
-func ginUpdateAccessKey(c *gin.Context, cli *nauth.AuthenticationClient) {
+func ginUpdateAccessKeyComment(c *gin.Context, cli *nauth.AuthenticationClient) {
 	// 获取并绑定请求参数
 	params := new(dto.AddAccessKeyDto)
 	if err := c.ShouldBindJSON(params); err != nil {
