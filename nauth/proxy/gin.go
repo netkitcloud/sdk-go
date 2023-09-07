@@ -13,10 +13,6 @@ type Action string
 
 type NormalProxyFunc func(c *gin.Context, cli *nauth.AuthenticationClient)
 
-type ProxyFunc interface {
-	NormalProxyFunc
-}
-
 type ActionFuncMap[KEY Action, VALUE NormalProxyFunc] map[KEY]VALUE
 
 const (

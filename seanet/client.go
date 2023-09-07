@@ -1,4 +1,4 @@
-package nauth
+package seanet
 
 import (
 	"bytes"
@@ -8,39 +8,73 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
-	"net/http"
-	"net/url"
 	"strconv"
 	"time"
 
+	"net/http"
+	"net/url"
+
+	"github.com/go-playground/validator/v10"
 	"github.com/netkitcloud/sdk-go/common"
-	"github.com/netkitcloud/sdk-go/nauth/dto"
+
+	"github.com/valyala/fastjson"
 )
 
-type AuthenticationAdmin struct {
-	options    *AuthenticationClientOptions
-	ClientUser *dto.User
+type SeanetClient struct {
+	validate    *validator.Validate
+	options     *SeanetClientOptions
+	AccessToken string
 }
 
-func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error) {
+type SeanetClientOptions struct {
+	Host         string
+	AccessKey    string
+	AccessSecret string
+}
+
+func NewClient(options *SeanetClientOptions) (*SeanetClient, error) {
 	if options.Host == "" {
 		options.Host = CoreAuthApiHost
 	}
 
-	if options.Tenant == "" {
-		return nil, errors.New("tenantId is required")
+	if options.AccessKey == "" {
+		return nil, errors.New("accesskey is required")
 	}
 
-	if options.Secret == "" {
-		return nil, errors.New("secret is required")
+	if options.AccessSecret == "" {
+		return nil, errors.New("accesssecret is required")
 	}
 
-	return &AuthenticationAdmin{
-		options: options,
+	validate := validator.New()
+	return &SeanetClient{
+		options:  options,
+		validate: validate,
 	}, nil
 }
 
-func (c *AuthenticationAdmin) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
+func (c *SeanetClient) SetToken(token string) {
+	c.AccessToken = token
+}
+
+func (c *SeanetClient) responseError(body []byte) error {
+	var p fastjson.Parser
+	v, err := p.Parse(string(body))
+	if err != nil {
+		return err
+	}
+
+	if !v.GetBool("status") {
+		msg := v.GetStringBytes("message")
+		if err != nil {
+			return err
+		}
+		return errors.New(string(msg))
+	}
+
+	return nil
+}
+
+func (c *SeanetClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
 	data, _ := json.Marshal(&reqDto)
 
 	req, err := http.NewRequest(method, c.options.Host+requestUrl, nil)
@@ -52,11 +86,8 @@ func (c *AuthenticationAdmin) SendHttpRequest(requestUrl string, method string, 
 		req.Header.Add("Content-Type", "application/json;charset=UTF-8")
 	}
 
-	if len(c.options.Tenant) > 0 {
-		req.Header.Add("x-nauth-tenant", c.options.Tenant)
-	}
-	if len(c.options.AppId) > 0 {
-		req.Header.Add("x-nauth-app", c.options.AppId)
+	if len(c.AccessToken) > 0 {
+		req.Header.Add("Authorization", c.AccessToken)
 	}
 
 	for key, value := range commonHeaders {
@@ -79,7 +110,8 @@ func (c *AuthenticationAdmin) SendHttpRequest(requestUrl string, method string, 
 			req.URL.RawQuery = querys.Encode()
 		}
 
-		sig := common.SignatureRequestGet(req, querys, []byte(c.options.Secret))
+		sig := common.SignatureRequestGet(req, querys, []byte(c.options.AccessSecret))
+		req.Header.Add("x-n-accesskey", c.options.AccessKey)
 		req.Header.Add("x-n-signature", sig)
 
 	} else if method != http.MethodGet && reqDto != nil {
@@ -88,7 +120,8 @@ func (c *AuthenticationAdmin) SendHttpRequest(requestUrl string, method string, 
 			return nil, err
 		}
 		req.Body = ioutil.NopCloser(bytes.NewReader(reqData))
-		sig := common.SignatureRequestBody(req, reqDto, []byte(c.options.Secret))
+		sig := common.SignatureRequestBody(req, reqDto, []byte(c.options.AccessSecret))
+		req.Header.Add("x-n-accesskey", c.options.AccessKey)
 		req.Header.Add("x-n-signature", sig)
 	}
 
