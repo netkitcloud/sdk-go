@@ -23,7 +23,7 @@ func (cli *AuthenticationAdmin) AddAppUser(appUser dto.AppUserCreateDto) (*commo
 	}
 
 	if !result.Status {
-		return &result, fmt.Errorf("code: %d", result.Code)
+		return &result, fmt.Errorf("code: %d, message: %s", result.Code, result.Message)
 	}
 
 	return &result, nil
