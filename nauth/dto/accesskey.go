@@ -23,16 +23,16 @@ type UpdateAccessKeyDto struct {
 }
 
 type ResetAccessSecretDto struct {
-	Data string
+	Data string `json:"data,omitempty"`
 	common.BaseResponse
 }
 
 type AccessKeyResponseDto struct {
 	common.BaseResponse
-	Data AccessKey
+	Data AccessKey `json:"data,omitempty"`
 }
 
 type ListAccessKeyDto struct {
 	common.BaseResponse
-	Data []AccessKey
+	Data []AccessKey `json:"data,omitempty"`
 }
