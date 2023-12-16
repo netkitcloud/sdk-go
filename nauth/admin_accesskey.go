@@ -10,7 +10,7 @@ import (
 	"github.com/valyala/fastjson"
 )
 
-func (cli *AuthenticationAdmin) GetAccessKey(accessKey string) (*dto.AccessKey, error) {
+func (cli *AuthenticationAdmin) GetAccessKey(accessKey string) (*dto.AccessKeyResponseDto, error) {
 	if accessKey == "" {
 		return nil, errors.New("accessKey is required")
 	}
@@ -21,10 +21,10 @@ func (cli *AuthenticationAdmin) GetAccessKey(accessKey string) (*dto.AccessKey, 
 		return nil, err
 	}
 
-	return cli.responseAccessKey(body)
+	return cli.responseAccessKeyResp(body)
 }
 
-func (cli *AuthenticationAdmin) responseAccessKey(b []byte) (*dto.AccessKey, error) {
+func (cli *AuthenticationAdmin) responseAccessKeyResp(b []byte) (*dto.AccessKeyResponseDto, error) {
 	var p fastjson.Parser
 	v, err := p.Parse(string(b))
 	if err != nil {
@@ -39,8 +39,8 @@ func (cli *AuthenticationAdmin) responseAccessKey(b []byte) (*dto.AccessKey, err
 		return nil, errors.New(string(msg))
 	}
 
-	byteAccessKey := v.GetObject("data").MarshalTo(nil)
-	resultAccessKey := dto.AccessKey{}
+	byteAccessKey := v.MarshalTo(nil)
+	resultAccessKey := dto.AccessKeyResponseDto{}
 	err = json.Unmarshal(byteAccessKey, &resultAccessKey)
 	if err != nil {
 		return nil, err
