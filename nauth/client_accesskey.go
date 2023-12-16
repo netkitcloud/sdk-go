@@ -91,36 +91,13 @@ func (cli *AuthenticationClient) GetAccessKey(accessKey string) (*dto.AccessKey,
 	return cli.responseAccessKey(body)
 }
 
-func (cli *AuthenticationClient) ListAccessKey(pagination common.PaginationParams) (accesskeyListResp *dto.ListAccessKeyDto, err error) {
+func (cli *AuthenticationClient) ListAccessKey(pagination common.PaginationParams) (resp *[]dto.AccessKey, err error) {
 	body, err := cli.SendHttpRequest("/accesskey", http.MethodGet, pagination)
 	if err != nil {
 		return
 	}
-	var p fastjson.Parser
-	v, err := p.Parse(string(body))
-	if err != nil {
-		return
-	}
 
-	if !v.GetBool("status") {
-		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
-		err = errors.New(string(msg))
-		return
-	}
-
-	err = json.Unmarshal(body, &accesskeyListResp)
-	if err != nil {
-		return
-	}
-
-	if !accesskeyListResp.Status {
-		err = fmt.Errorf("code : %d", accesskeyListResp.Code)
-	}
-
-	return
+	return cli.responseAccessKeyArray(body)
 }
 
 func (cli *AuthenticationClient) responseAccessKey(b []byte) (*dto.AccessKey, error) {
@@ -140,6 +117,31 @@ func (cli *AuthenticationClient) responseAccessKey(b []byte) (*dto.AccessKey, er
 
 	byteAccessKey := v.GetObject("data").MarshalTo(nil)
 	resultAccessKey := dto.AccessKey{}
+	err = json.Unmarshal(byteAccessKey, &resultAccessKey)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resultAccessKey, nil
+}
+
+func (cli *AuthenticationClient) responseAccessKeyArray(b []byte) (*[]dto.AccessKey, error) {
+	var p fastjson.Parser
+	v, err := p.Parse(string(b))
+	if err != nil {
+		return nil, err
+	}
+
+	if !v.GetBool("status") {
+		msg := v.GetStringBytes("message")
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.New(string(msg))
+	}
+
+	byteAccessKey := v.GetObject("data").MarshalTo(nil)
+	resultAccessKey := []dto.AccessKey{}
 	err = json.Unmarshal(byteAccessKey, &resultAccessKey)
 	if err != nil {
 		return nil, err

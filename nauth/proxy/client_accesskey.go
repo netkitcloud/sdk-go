@@ -102,7 +102,7 @@ func ginListAccessKey(c *gin.Context, cli *nauth.AuthenticationClient) {
 		return
 	}
 
-	c.JSON(http.StatusOK, datas)
+	c.JSON(http.StatusOK, response.NewResponseData(response.Success, datas))
 }
 
 // @description: 重设用户指定ak的secret
