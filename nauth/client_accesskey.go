@@ -11,13 +11,13 @@ import (
 	"github.com/valyala/fastjson"
 )
 
-func (cli *AuthenticationClient) AddAccessKey(dto dto.AddAccessKeyDto) (*dto.AccessKeyResponseDto, error) {
+func (cli *AuthenticationClient) AddAccessKey(dto dto.AddAccessKeyDto) (*dto.AccessKey, error) {
 	body, err := cli.SendHttpRequest("/accesskey", http.MethodPost, dto)
 	if err != nil {
 		return nil, err
 	}
 
-	return cli.responseAccessKeyResp(body)
+	return cli.responseAccessKey(body)
 }
 
 func (cli *AuthenticationClient) DeleteAccessKey(accessKey string) (*common.BaseResponse, error) {
@@ -77,7 +77,7 @@ func (cli *AuthenticationClient) UpdateAccessKey(dto dto.UpdateAccessKeyDto) (*c
 	return &result, nil
 }
 
-func (cli *AuthenticationClient) GetAccessKey(accessKey string) (*dto.AccessKeyResponseDto, error) {
+func (cli *AuthenticationClient) GetAccessKey(accessKey string) (*dto.AccessKey, error) {
 	if accessKey == "" {
 		return nil, errors.New("accessKey is required")
 	}
@@ -88,7 +88,7 @@ func (cli *AuthenticationClient) GetAccessKey(accessKey string) (*dto.AccessKeyR
 		return nil, err
 	}
 
-	return cli.responseAccessKeyResp(body)
+	return cli.responseAccessKey(body)
 }
 
 func (cli *AuthenticationClient) ListAccessKey(pagination common.PaginationParams) (accesskeyListResp *dto.ListAccessKeyDto, err error) {
@@ -123,7 +123,7 @@ func (cli *AuthenticationClient) ListAccessKey(pagination common.PaginationParam
 	return
 }
 
-func (cli *AuthenticationClient) responseAccessKeyResp(b []byte) (*dto.AccessKeyResponseDto, error) {
+func (cli *AuthenticationClient) responseAccessKey(b []byte) (*dto.AccessKey, error) {
 	var p fastjson.Parser
 	v, err := p.Parse(string(b))
 	if err != nil {
@@ -138,8 +138,8 @@ func (cli *AuthenticationClient) responseAccessKeyResp(b []byte) (*dto.AccessKey
 		return nil, errors.New(string(msg))
 	}
 
-	byteAccessKey := v.MarshalTo(nil)
-	resultAccessKey := dto.AccessKeyResponseDto{}
+	byteAccessKey := v.GetObject("data").MarshalTo(nil)
+	resultAccessKey := dto.AccessKey{}
 	err = json.Unmarshal(byteAccessKey, &resultAccessKey)
 	if err != nil {
 		return nil, err
