@@ -39,12 +39,8 @@ type QueryDeviceDto struct {
 }
 
 type SwitchDeviceDto struct {
-	GatewayProductkey string `json:"gateway_product_key"`
-	GatewayDevicekey  string `json:"gateway_devicekey"`
-	Devicekey         string `json:"devicekey"`
-	Type              int    `json:"type"`
-	Status            int    `json:"status"`
-	Endpoint          int    `json:"endpoint"`
+	Devicekey string   `json:"devicekey"`
+	Contents  []string `json:"contents"` // 多条指令，按顺序发送给设备
 }
 
 type Device struct {
