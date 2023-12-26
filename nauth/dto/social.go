@@ -18,6 +18,11 @@ type WxUser struct {
 	CreatedAt string `json:"createdAt,omitempty"`
 }
 
+type ListWxUserDto struct {
+	common.BaseResponse
+	Data []WxUser `json:"data,omitempty"`
+}
+
 type SocialLoginDto struct {
 	// 微信小程序登录时需要传入的字段
 	PhoneCode string `json:"phone_code,omitempty"`
