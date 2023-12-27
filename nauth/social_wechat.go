@@ -12,7 +12,7 @@ import (
 )
 
 // 第三方微信公众号向用户发送模板消息
-func (c *AuthenticationClient) SocialWxOfficeSendMsg(tenant, identifier string, msg *dto.SocialWxOfficeTemplateMsgDto) (*common.BaseResponse, error) {
+func (c *AuthenticationAdmin) SocialWxOfficeSendMsg(tenant, identifier string, msg *dto.SocialWxOfficeTemplateMsgDto) (*common.BaseResponse, error) {
 	if tenant == "" || identifier == "" {
 		return nil, fmt.Errorf("tenant and identifier are required")
 	}
