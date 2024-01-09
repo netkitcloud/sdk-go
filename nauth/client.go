@@ -5,10 +5,13 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"strconv"
 
 	"net/http"
+	"net/url"
 
 	"github.com/netkitcloud/sdk-go/nauth/dto"
 
@@ -111,6 +114,8 @@ func (c *AuthenticationClient) responseError(body []byte) error {
 }
 
 func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
+	data, _ := json.Marshal(&reqDto)
+
 	req, err := http.NewRequest(method, c.options.Host+requestUrl, nil)
 	if err != nil {
 		return nil, err
@@ -140,7 +145,18 @@ func (c *AuthenticationClient) SendHttpRequest(requestUrl string, method string,
 		if err != nil {
 			return nil, err
 		}
-		req.Body = ioutil.NopCloser(bytes.NewReader(reqData))
+		req.Body = io.NopCloser(bytes.NewReader(reqData))
+	} else if method == http.MethodGet || reqDto == nil {
+		variables := make(map[string]interface{})
+		json.Unmarshal(data, &variables)
+
+		querys := url.Values{}
+		if len(variables) > 0 {
+			for key, value := range variables {
+				querys.Set(key, fmt.Sprintf("%v", value))
+			}
+			req.URL.RawQuery = querys.Encode()
+		}
 	}
 
 	client := &http.Client{
