@@ -71,13 +71,14 @@ func (c *AuthenticationClient) UpdatePhone(phoneDto dto.UpdatePhoneDto) error {
 }
 
 // 修改手机号
-func (c *AuthenticationClient) GetPhoneSMS(phone string) error {
+func (c *AuthenticationClient) GetPhoneSMS(phone string, smsType int) error {
 	if len(c.AccessToken) <= 0 {
 		return fmt.Errorf("TokenError")
 	}
 
 	body, err := c.SendHttpRequest("/user/getsms", http.MethodPost, map[string]interface{}{
-		"phone": phone,
+		"phone":   phone,
+		"smsType": smsType,
 	})
 	if err != nil {
 		return err
@@ -92,6 +93,58 @@ func (c *AuthenticationClient) GetSMS() error {
 	}
 
 	body, err := c.SendHttpRequest("/user/getsms", http.MethodGet, nil)
+	if err != nil {
+		return err
+	}
+
+	return c.responseError(body)
+}
+
+// 发送邮件
+func (c *AuthenticationClient) PostEmail(email string, content string, scene int) error {
+	if len(c.AccessToken) <= 0 {
+		return fmt.Errorf("TokenError")
+	}
+
+	body, err := c.SendHttpRequest("/user/email", http.MethodPost, map[string]interface{}{
+		"email":   email,
+		"content": content,
+		"scene":   scene,
+	})
+	if err != nil {
+		return err
+	}
+
+	return c.responseError(body)
+}
+
+// 邮箱验证码验证
+func (c *AuthenticationClient) VerifyEmailCode(email string, code string) error {
+	if len(c.AccessToken) <= 0 {
+		return fmt.Errorf("TokenError")
+	}
+
+	body, err := c.SendHttpRequest("/user/email/code", http.MethodGet, map[string]interface{}{
+		"email": email,
+		"code":  code,
+	})
+	if err != nil {
+		return err
+	}
+
+	return c.responseError(body)
+}
+
+// 短信验证码验证
+func (c *AuthenticationClient) VerifySmsCode(phone string, code string) error {
+	if len(c.AccessToken) <= 0 {
+		return fmt.Errorf("TokenError")
+	}
+
+	body, err := c.SendHttpRequest("/user/sms/code", http.MethodGet, map[string]interface{}{
+		"phone": phone,
+		"code":  code,
+	})
 	if err != nil {
 		return err
 	}
