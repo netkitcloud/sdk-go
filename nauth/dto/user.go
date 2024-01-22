@@ -16,6 +16,8 @@ type UserProfile struct {
 	Picture   string `json:"picture,omitempty"`
 	Timezone  string `json:"timezone,omitempty"`
 	Locale    string `json:"locale,omitempty"`
+	UnionId   string `json:"unionId,omitempty"`
+	OpenId    string `json:"openId,omitempty"`
 }
 
 type User struct {

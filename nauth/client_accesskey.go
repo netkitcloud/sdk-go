@@ -96,6 +96,7 @@ func (cli *AuthenticationClient) ListAccessKey(pagination common.PaginationParam
 	if err != nil {
 		return
 	}
+
 	var p fastjson.Parser
 	v, err := p.Parse(string(body))
 	if err != nil {

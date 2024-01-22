@@ -29,7 +29,7 @@ func ginAddAccessKeyComment(c *gin.Context, cli *nauth.AuthenticationClient) {
 		return
 	}
 
-	c.JSON(http.StatusOK, datas)
+	c.JSON(http.StatusOK, response.NewResponseData(response.Success, datas))
 }
 
 // @description: 获取并返回用户指定的ak信息
@@ -55,7 +55,7 @@ func ginDeleteAccessKey(c *gin.Context, cli *nauth.AuthenticationClient) {
 		return
 	}
 
-	c.JSON(http.StatusOK, datas)
+	c.JSON(http.StatusOK, response.NewResponseData(response.Success, datas))
 }
 
 // @description: 更新用户指定ak的comment备注
@@ -102,7 +102,7 @@ func ginListAccessKey(c *gin.Context, cli *nauth.AuthenticationClient) {
 		return
 	}
 
-	c.JSON(http.StatusOK, response.NewResponseData(response.Success, datas.Data))
+	c.JSON(http.StatusOK, datas)
 }
 
 // @description: 重设用户指定ak的secret
@@ -115,5 +115,5 @@ func ginResetAccessKey(c *gin.Context, cli *nauth.AuthenticationClient) {
 		return
 	}
 
-	c.JSON(http.StatusOK, datas)
+	c.JSON(http.StatusOK, response.NewResponseData(response.Success, datas))
 }
