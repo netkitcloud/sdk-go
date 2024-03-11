@@ -21,14 +21,15 @@ type UserProfile struct {
 }
 
 type User struct {
-	UID         string `json:"uid,omitempty"`
-	IsSuper     bool   `json:"issuper,omitempty"`
-	UserName    string `json:"username,omitempty"`
-	Email       string `json:"email,omitempty"`
-	Phone       string `json:"phone,omitempty"`
-	AccessToken string `json:"access_token,omitempty"`
-	UpdatedAt   string `json:"updatedAt,omitempty"`
-	CrateddAt   string `json:"createdAt,omitempty"`
+	UID         string   `json:"uid,omitempty"`
+	IsSuper     bool     `json:"issuper,omitempty"`
+	UserName    string   `json:"username,omitempty"`
+	Email       string   `json:"email,omitempty"`
+	Phone       string   `json:"phone,omitempty"`
+	AccessToken string   `json:"access_token,omitempty"`
+	UpdatedAt   string   `json:"updatedAt,omitempty"`
+	CrateddAt   string   `json:"createdAt,omitempty"`
+	WxUsers     []WxUser `json:"wxUsers,omitempty"`
 	UserProfile
 }
 

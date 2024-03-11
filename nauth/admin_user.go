@@ -43,6 +43,20 @@ func (cli *AuthenticationAdmin) GetUserById(userId string) (*dto.GetUserResponse
 	return &result, nil
 }
 
+func (cli *AuthenticationAdmin) GetUserByUsername(username string) (*dto.GetUserResponseDto, error) {
+	body, err := cli.SendHttpRequest(fmt.Sprint("/users/username/", username), http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var result dto.GetUserResponseDto
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
 func (cli *AuthenticationAdmin) UpdateUser(userId string, userInfo dto.UpdateUserDto) (*common.BaseResponse, error) {
 	body, err := cli.SendHttpRequest(fmt.Sprint("/users/", userId), http.MethodPut, userInfo)
 	if err != nil {
