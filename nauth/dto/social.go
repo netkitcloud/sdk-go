@@ -9,6 +9,7 @@ import (
 // WxUser 微信用户结构定义
 type WxUser struct {
 	ID        string `json:"id"`
+	Name      string `json:"name"`
 	OpenID    string `json:"openid"`
 	UnionID   string `json:"unionid"`
 	Phone     string `json:"phone"`

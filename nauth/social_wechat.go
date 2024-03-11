@@ -42,7 +42,6 @@ func (c *AuthenticationClient) SocialWxUserList(tenant, identifier string, query
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("body: %s\n", string(body))
 
 	var p fastjson.Parser
 	v, err := p.Parse(string(body))
