@@ -78,3 +78,32 @@ type ListDeviceDto struct {
 	Data []Device
 	common.BaseResponse
 }
+
+type DeviceLog struct {
+	Sn         string      `json:"sn"`
+	RecordTime string      `json:"record_time"`
+	Msg        interface{} `json:"msg"`
+}
+
+type DeviceLogDto struct {
+	common.BaseListResponse
+	Data []DeviceLog
+}
+
+type BelongDevice struct {
+	Id            string `json:"id"`
+	CreatedAt     string `json:"createdat"`
+	GatewayRuleId string `json:"gateway_rule_id"`
+	Devicekey     string `json:"devicekey"`
+}
+
+type BelongDeviceDto struct {
+	Data []BelongDevice
+	common.BaseResponse
+}
+
+// 向指定主题发送消息内容
+type CmdDeviceDto struct {
+	Topic   string `json:"topic"`
+	Content string `json:"content" validate:"required"` // 多条指令，按顺序发送给设备
+}

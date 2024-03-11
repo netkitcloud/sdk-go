@@ -16,7 +16,10 @@ const (
 	apiProduct       = "/product"
 	apiModifyProduct = "/product/%s"
 
-	apiDevice       = "/device"
-	apiStatusDevice = "/device/status"
-	apiModifyDevice = "/device/%s"
+	apiDevice        = "/device"
+	apiStatusDevice  = "/device/status"
+	apiCmdDevice     = "/device/cmd"
+	apiModifyDevice  = "/device/%s"
+	apiLogDevice     = "/device/%s/log"
+	apiBelongDevices = "/device/%s/gateway"
 )
