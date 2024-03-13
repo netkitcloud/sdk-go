@@ -60,6 +60,8 @@ type SocialLoginRespDto struct {
 }
 
 type SocialBindDto struct {
+	// 若需要指定用户绑定时传入的字段
+	UID string `json:"uid,omitempty"`
 	// 微信小程序绑定时需要传入的字段
 	PhoneCode string `json:"phone_code,omitempty"`
 	LoginCode string `json:"login_code,omitempty"`
