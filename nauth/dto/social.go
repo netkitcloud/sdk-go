@@ -78,6 +78,8 @@ type SocialBindRespDto struct {
 }
 
 type SocialUnBindDto struct {
+	// 若需要指定用户绑定时传入的字段
+	UID string `json:"uid,omitempty"`
 	// 微信小程序绑定时无需传入字段
 	// 微信公众号绑定时无需传入字段
 	OpenID  string `json:"openid,omitempty"`
