@@ -9,7 +9,7 @@ type AuthenticationClientOptions struct {
 	RedirectUri             string
 	TokenEndPointAuthMethod string
 	Issuer                  string
-	UserContextConfig       map[string]interface{}
+	UserContext             map[string]interface{}
 }
 
 type AuthUrlResult struct {

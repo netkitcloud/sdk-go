@@ -18,8 +18,9 @@ import (
 )
 
 type AuthenticationAdmin struct {
-	options    *AuthenticationClientOptions
-	ClientUser *dto.User
+	options     *AuthenticationClientOptions
+	ClientUser  *dto.User
+	UserContext map[string]interface{}
 }
 
 func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error) {
@@ -36,7 +37,8 @@ func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error
 	}
 
 	return &AuthenticationAdmin{
-		options: options,
+		options:     options,
+		UserContext: options.UserContext,
 	}, nil
 }
 
