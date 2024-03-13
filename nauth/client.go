@@ -19,9 +19,10 @@ import (
 )
 
 type AuthenticationClient struct {
-	options     *AuthenticationClientOptions
-	ClientUser  *dto.User
 	AccessToken string
+	ClientUser  *dto.User
+	UserContext map[string]interface{}
+	options     *AuthenticationClientOptions
 }
 
 const (
@@ -49,7 +50,8 @@ func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, err
 	}
 
 	return &AuthenticationClient{
-		options: options,
+		options:     options,
+		UserContext: options.UserContext,
 	}, nil
 }
 
