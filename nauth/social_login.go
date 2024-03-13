@@ -62,7 +62,7 @@ func (c *AuthenticationClient) SocialUnBind(tenant, identifier string, bind *dto
 	}
 
 	uri := fmt.Sprintf("/%s/social/unbind/%s", tenant, identifier)
-	body, err := c.SendHttpRequest(uri, http.MethodPost, bind)
+	body, err := c.SendHttpRequest(uri, http.MethodGet, bind)
 	if err != nil {
 		return nil, err
 	}
