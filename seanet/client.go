@@ -20,6 +20,10 @@ import (
 	"github.com/valyala/fastjson"
 )
 
+const (
+	CurrentUserToken = "UserToken"
+)
+
 type SeanetClient struct {
 	validate    *validator.Validate
 	options     *SeanetClientOptions
@@ -52,8 +56,12 @@ func NewClient(options *SeanetClientOptions) (*SeanetClient, error) {
 	}, nil
 }
 
-func (c *SeanetClient) SetToken(token string) {
+func (c *SeanetClient) SetToken(token string) error {
+	if token == "" {
+		return errors.New("token cannot be empty")
+	}
 	c.AccessToken = token
+	return nil
 }
 
 func (c *SeanetClient) responseError(body []byte) error {

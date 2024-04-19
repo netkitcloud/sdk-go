@@ -107,3 +107,10 @@ type CmdDeviceDto struct {
 	Topic   string `json:"topic"`
 	Content string `json:"content" validate:"required"` // 多条指令，按顺序发送给设备
 }
+
+// 控制网关设备DTO
+type ControlGatewayDeviceDto struct {
+	Sn      string `json:"sn"`
+	Cmd     string `json:"cmd"`
+	Content string `json:"content"`
+}
