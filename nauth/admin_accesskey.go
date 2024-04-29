@@ -33,9 +33,6 @@ func (cli *AuthenticationAdmin) responseAccessKey(b []byte) (*dto.AccessKey, err
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 

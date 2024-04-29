@@ -85,9 +85,6 @@ func (cli *AuthenticationAdmin) ListApp(pagination common.PaginationParams) (app
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}

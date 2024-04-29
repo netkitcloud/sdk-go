@@ -16,10 +16,16 @@ const (
 	apiProduct       = "/product"
 	apiModifyProduct = "/product/%s"
 
-	apiDevice        = "/device"
-	apiStatusDevice  = "/device/status"
-	apiCmdDevice     = "/device/cmd"
-	apiModifyDevice  = "/device/%s"
-	apiLogDevice     = "/device/%s/log"
-	apiBelongDevices = "/device/%s/gateway"
+	apiDevice       = "/device"
+	apiModifyDevice = "/device/%s"
+
+	// gateway
+	apiLogDevice    = "/device/%s/log"
+	apiSubDevices   = "/device/%s/gateway"
+	apiStatusDevice = "/device/status"
+	apiCmdDevice    = "/device/cmd"
+
+	// gateway rule
+	apiGatewayRule        = "/gateway/rule"
+	apiGatewayRuleDevices = "/gateway/rule/%s/device"
 )

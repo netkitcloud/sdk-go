@@ -99,9 +99,6 @@ func (cli *AuthenticationAdmin) ListUser(pagination common.PaginationParams) (us
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}

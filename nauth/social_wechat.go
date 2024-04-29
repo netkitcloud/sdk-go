@@ -51,9 +51,6 @@ func (c *AuthenticationClient) SocialWxUserList(tenant, identifier string, query
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}

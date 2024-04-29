@@ -80,9 +80,6 @@ func (c *AuthenticationClient) responseGetUser(b []byte) (*dto.User, error) {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 
@@ -106,9 +103,6 @@ func (c *AuthenticationClient) responseError(body []byte) error {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return err
-		}
 		return errors.New(string(msg))
 	}
 

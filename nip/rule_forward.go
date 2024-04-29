@@ -96,9 +96,6 @@ func (c *NIPClient) ListRuleForward(pagination common.PaginationParams) (ruleLis
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}
@@ -124,9 +121,6 @@ func (c *NIPClient) responseRule(b []byte) (*dto.RuleForward, error) {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 

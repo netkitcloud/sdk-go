@@ -16,21 +16,34 @@ type NormalProxyFunc func(c *gin.Context, cli *seanet.SeanetClient)
 type ActionFuncMap[KEY Action, VALUE NormalProxyFunc] map[KEY]VALUE
 
 const (
-	GetDevice         Action = "GetDevice"
-	UpdateDevice      Action = "UpdateDevice"
-	ListDevice        Action = "ListDevice"
-	SwitchDevice      Action = "SwitchDevice"
-	GetDeviceLog      Action = "GetDeviceLog"
-	ListGatewayDevice Action = "ListGatewayDevice"
+	GetDevice    Action = "GetDevice"
+	UpdateDevice Action = "UpdateDevice"
+	ListDevice   Action = "ListDevice"
+
+	// gateway
+	SwitchDevice            Action = "SwitchDevice"
+	ControlGateway          Action = "ControlGateway"
+	GetDeviceLog            Action = "GetDeviceLog"
+	ListGatewayDevice       Action = "ListGatewayDevice"
+	ListGatewayRule         Action = "ListGatewayRule"
+	ListGatewayRuleDevices  Action = "ListGatewayRuleDevices"
+	ListGatewaySubDevice    Action = "ListGatewaySubDevice"
+	CreateGatewayRuleDevice Action = "CreateGatewayRuleDevice"
+	DeleteGatewayRuleDevice Action = "DeleteGatewayRuleDevice"
 )
 
 var ActionFunc ActionFuncMap[Action, NormalProxyFunc] = map[Action]NormalProxyFunc{
-	GetDevice:         ginGetDevice,
-	UpdateDevice:      ginUpdateDevice,
-	ListDevice:        ginListDevice,
-	SwitchDevice:      ginSwitchDevice,
-	GetDeviceLog:      ginGetDeviceLog,
-	ListGatewayDevice: ginListGatewayDevice,
+	GetDevice:               ginGetDevice,
+	UpdateDevice:            ginUpdateDevice,
+	ListDevice:              ginListDevice,
+	SwitchDevice:            ginSwitchDevice,
+	ControlGateway:          ginControlGateway,
+	GetDeviceLog:            ginGetDeviceLog,
+	ListGatewayRule:         ginListGatewayRule,
+	ListGatewayRuleDevices:  ginListGatewayRuleDevices,
+	ListGatewaySubDevice:    ginListGatewaySubDevice,
+	CreateGatewayRuleDevice: ginCreateGatewayRuleDevice,
+	DeleteGatewayRuleDevice: ginDeleteGatewayRuleDevice,
 }
 
 func GinRouterClientProxy(action Action, options *seanet.SeanetClientOptions) func(*gin.Context) {

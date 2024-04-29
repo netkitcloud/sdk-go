@@ -105,9 +105,6 @@ func (cli *AuthenticationClient) ListAccessKey(pagination common.PaginationParam
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}
@@ -133,9 +130,6 @@ func (cli *AuthenticationClient) responseAccessKey(b []byte) (*dto.AccessKey, er
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 

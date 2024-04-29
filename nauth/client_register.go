@@ -27,9 +27,6 @@ func (c *AuthenticationClient) RegisterByUsername(dto *dto.UsernameRegisterDto) 
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return err
-		}
 		return errors.New(string(msg))
 	}
 
@@ -52,9 +49,6 @@ func (c *AuthenticationClient) RegisterByPhoneCode(dto *dto.PhoneCodeRegisterDto
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return err
-		}
 		return errors.New(string(msg))
 	}
 

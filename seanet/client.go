@@ -16,8 +16,6 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/netkitcloud/sdk-go/common"
-
-	"github.com/valyala/fastjson"
 )
 
 const (
@@ -61,24 +59,6 @@ func (c *SeanetClient) SetToken(token string) error {
 		return errors.New("token cannot be empty")
 	}
 	c.AccessToken = token
-	return nil
-}
-
-func (c *SeanetClient) responseError(body []byte) error {
-	var p fastjson.Parser
-	v, err := p.Parse(string(body))
-	if err != nil {
-		return err
-	}
-
-	if !v.GetBool("status") {
-		msg := v.GetStringBytes("message")
-		if err != nil {
-			return err
-		}
-		return errors.New(string(msg))
-	}
-
 	return nil
 }
 

@@ -27,7 +27,12 @@ type Product struct {
 	AllowUserCreate        bool                     `json:"allow_user_create"`
 }
 
+type ProductDto struct {
+	Data Product
+	common.BaseResponse
+}
+
 type ListProductDto struct {
 	Data []Product
-	common.BaseResponse
+	common.BaseListResponse
 }
