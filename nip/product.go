@@ -85,9 +85,6 @@ func (c *NIPClient) ListProduct(pagination common.PaginationParams) (productList
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}
@@ -113,9 +110,6 @@ func (c *NIPClient) responseProduct(b []byte) (*dto.Product, error) {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 

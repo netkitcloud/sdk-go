@@ -16,6 +16,6 @@ type BaseListResponse struct {
 }
 
 type PaginationParams struct {
-	Current int `json:"current"`
-	PerPage int `json:"per_page"`
+	Current int `json:"current" default:"1" validate:"omitempty"`
+	PerPage int `json:"per_page" default:"20" validate:"omitempty"`
 }

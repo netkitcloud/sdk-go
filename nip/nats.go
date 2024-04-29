@@ -102,9 +102,6 @@ func (c *NIPClient) responseNatsUser(b []byte) (*dto.NatsUser, error) {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 
@@ -127,9 +124,6 @@ func (c *NIPClient) responseNatsStatus(b []byte) (*dto.NatsStatus, error) {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 
@@ -152,9 +146,6 @@ func (c *NIPClient) responseNatsPermission(b []byte) (*dto.NatsPermission, error
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 

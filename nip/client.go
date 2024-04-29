@@ -71,9 +71,6 @@ func (c *NIPClient) responseError(body []byte) error {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return err
-		}
 		return errors.New(string(msg))
 	}
 

@@ -85,9 +85,6 @@ func (c *NIPClient) ListDevice(pagination common.PaginationParams) (deviceListRe
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}
@@ -113,9 +110,6 @@ func (c *NIPClient) responseDevice(b []byte) (*dto.Device, error) {
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return nil, err
-		}
 		return nil, errors.New(string(msg))
 	}
 

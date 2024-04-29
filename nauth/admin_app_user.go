@@ -71,9 +71,6 @@ func (cli *AuthenticationAdmin) ListAppUser(pagination common.PaginationParams) 
 
 	if !v.GetBool("status") {
 		msg := v.GetStringBytes("message")
-		if err != nil {
-			return
-		}
 		err = errors.New(string(msg))
 		return
 	}
