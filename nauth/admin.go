@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/netkitcloud/sdk-go/common"
 	"github.com/netkitcloud/sdk-go/nauth/dto"
 )
@@ -21,6 +22,7 @@ type AuthenticationAdmin struct {
 	options     *AuthenticationClientOptions
 	ClientUser  *dto.User
 	UserContext map[string]interface{}
+	validate    *validator.Validate
 }
 
 func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error) {
@@ -36,9 +38,11 @@ func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error
 		return nil, errors.New("secret is required")
 	}
 
+	validate := validator.New()
 	return &AuthenticationAdmin{
 		options:     options,
 		UserContext: options.UserContext,
+		validate:    validate,
 	}, nil
 }
 

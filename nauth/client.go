@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/netkitcloud/sdk-go/nauth/dto"
 
 	"github.com/valyala/fastjson"
@@ -23,6 +24,7 @@ type AuthenticationClient struct {
 	ClientUser  *dto.User
 	UserContext map[string]interface{}
 	options     *AuthenticationClientOptions
+	validate    *validator.Validate
 }
 
 const (
@@ -49,9 +51,11 @@ func NewClient(options *AuthenticationClientOptions) (*AuthenticationClient, err
 		return nil, errors.New("AppSecret is required")
 	}
 
+	validate := validator.New()
 	return &AuthenticationClient{
 		options:     options,
 		UserContext: options.UserContext,
+		validate:    validate,
 	}, nil
 }
 
