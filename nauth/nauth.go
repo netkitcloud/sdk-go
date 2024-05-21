@@ -15,15 +15,22 @@ var commonHeaders = map[string]string{
 const (
 	apiRole        = "/role"
 	apiSpecialRole = "/role/%s"
+	apiUserRole    = "/role/user"
 
-	apiResource        = "/resource"
-	apiSpecialResource = "/resource/%s"
+	apiResource            = "/resource"
+	apiSpecialResource     = "/resource/%s"
+	apiAuthorizeResource   = apiResource + "/authorize"
+	apiUnauthorizeResource = apiResource + "/unauthorize"
 
 	apiAction        = apiResource + "/action"
 	apiSpecialAction = apiResource + "/action/%s"
+	apiVerifyAction  = apiAction + "/verify"
 
-	apiOrganization        = "/organization"
-	apiSpecialOrganization = "/organization/%s"
+	apiOrganization                    = "/organization"
+	apiSpecialOrganization             = "/organization/%s"
+	apiSpecialOrganizationMember       = apiSpecialOrganization + "/member"
+	apiSpecialOrganizationMemberBind   = apiSpecialOrganizationMember + "/bind"
+	apiSpecialOrganizationMemberUnbind = apiSpecialOrganizationMember + "/unbind"
 
 	apiDepartment        = "/department"
 	apiSpecialDepartment = "/department/%s"

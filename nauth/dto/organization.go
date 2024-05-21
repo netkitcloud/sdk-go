@@ -16,7 +16,7 @@ type Organization struct {
 	Updatedat   string `json:"updatedat"`
 
 	Departments []Department `json:"departments"`
-	// Users       []User       `json:"users"`
+	Users       []User       `json:"users"`
 }
 
 type OrganizationDto struct {

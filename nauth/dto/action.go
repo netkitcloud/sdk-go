@@ -23,3 +23,10 @@ type ListActionDto struct {
 	Data []Action
 	common.BaseListResponse
 }
+
+type VerifyActionDto struct {
+	Data struct {
+		HasPermission bool `json:"hasPermission"`
+	} `json:"data"`
+	common.BaseResponse
+}

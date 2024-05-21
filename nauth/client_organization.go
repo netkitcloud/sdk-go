@@ -90,3 +90,60 @@ func (c *AuthenticationClient) ListOrganization(pagination param.QueryOrganizati
 	}
 	return
 }
+
+// 在组织下添加成员
+func (c *AuthenticationClient) OrgAddMember(organization_id string, params *dto.AddUserDto) (resp common.BaseResponse, err error) {
+	if organization_id == "" {
+		err = errors.New("organization_id is required")
+		return
+	}
+
+	uri := fmt.Sprintf(apiSpecialOrganizationMember, organization_id)
+	body, err := c.SendHttpRequest(uri, http.MethodPost, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}
+
+// 在组织下绑定成员
+func (c *AuthenticationClient) OrgBindMember(organization_id string, params *dto.OrganizationUser) (resp common.BaseResponse, err error) {
+	if organization_id == "" {
+		err = errors.New("organization_id is required")
+		return
+	}
+
+	uri := fmt.Sprintf(apiSpecialOrganizationMemberBind, organization_id)
+	body, err := c.SendHttpRequest(uri, http.MethodPost, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}
+
+// 在组织下解绑成员
+func (c *AuthenticationClient) OrgUnbindMember(organization_id string, params *dto.OrganizationUser) (resp common.BaseResponse, err error) {
+	if organization_id == "" {
+		err = errors.New("organization_id is required")
+		return
+	}
+
+	uri := fmt.Sprintf(apiSpecialOrganizationMemberUnbind, organization_id)
+	body, err := c.SendHttpRequest(uri, http.MethodDelete, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}

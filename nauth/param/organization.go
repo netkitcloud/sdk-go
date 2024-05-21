@@ -28,3 +28,8 @@ type QueryOrganization struct {
 	City     string `json:"city,omitempty" form:"city"`
 	Category string `json:"category,omitempty" form:"category"`
 }
+
+// 组织下绑定/解绑用户参数
+type OrganizationUser struct {
+	UserUIDs []string `json:"user_uids" form:"user_uids"`
+}

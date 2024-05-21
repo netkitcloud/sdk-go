@@ -21,15 +21,18 @@ type UserProfile struct {
 }
 
 type User struct {
-	UID         string   `json:"uid,omitempty"`
-	IsSuper     bool     `json:"issuper,omitempty"`
-	UserName    string   `json:"username,omitempty"`
-	Email       string   `json:"email,omitempty"`
-	Phone       string   `json:"phone,omitempty"`
-	AccessToken string   `json:"access_token,omitempty"`
-	UpdatedAt   string   `json:"updatedAt,omitempty"`
-	CrateddAt   string   `json:"createdAt,omitempty"`
-	WxUsers     []WxUser `json:"wxUsers,omitempty"`
+	UID           string   `json:"uid,omitempty"`
+	IsSuper       bool     `json:"issuper,omitempty"`
+	UserName      string   `json:"username,omitempty"`
+	Email         string   `json:"email,omitempty"`
+	Phone         string   `json:"phone,omitempty"`
+	AccessToken   string   `json:"access_token,omitempty"`
+	UpdatedAt     string   `json:"updatedAt,omitempty"`
+	CrateddAt     string   `json:"createdAt,omitempty"`
+	SourceType    string   `json:"source_type,omitempty"`    // adminCreated=超级管理员创建, orgManagerCreated= 组织管理员创建, selfRegister=自注册
+	AccountStatus int      `json:"account_status,omitempty"` // 1=正常，2=封禁
+	WxUsers       []WxUser `json:"wxUsers,omitempty"`
+	Roles         []string `json:"roles,omitempty"`
 	UserProfile
 }
 
