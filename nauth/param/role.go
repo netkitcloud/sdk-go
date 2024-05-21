@@ -18,3 +18,9 @@ type QueryRole struct {
 	Code   string `json:"code,omitempty" form:"code"`
 	Status bool   `json:"status,omitempty" form:"status"`
 }
+
+// UserBindRoleForm 用户绑定/解绑角色表单
+type UserBindRoleForm struct {
+	UserUIDs []string `json:"user_uids" validate:"required"`
+	RoleCode string   `json:"role_code" validate:"required"`
+}

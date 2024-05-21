@@ -90,3 +90,37 @@ func (c *AuthenticationClient) ListRole(pagination param.QueryRole) (resp dto.Li
 	}
 	return
 }
+
+// 用户绑定角色
+func (c *AuthenticationClient) UserBindRole(params *param.UserBindRoleForm) (resp common.BaseResponse, err error) {
+	if err = c.validate.Struct(params); err != nil {
+		return
+	}
+
+	body, err := c.SendHttpRequest(apiUserRole, http.MethodPost, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}
+
+// 用户解绑角色
+func (c *AuthenticationClient) UserUnbindRole(params *param.UserBindRoleForm) (resp common.BaseResponse, err error) {
+	if err = c.validate.Struct(params); err != nil {
+		return
+	}
+
+	body, err := c.SendHttpRequest(apiUserRole, http.MethodDelete, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}
