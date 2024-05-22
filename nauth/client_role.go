@@ -28,8 +28,8 @@ func (c *AuthenticationClient) CreateRole(params *param.CreateRole) (resp dto.Ro
 }
 
 // 更新角色
-func (c *AuthenticationClient) DeleteRole(role_code string) (resp common.BaseResponse, err error) {
-	uri := fmt.Sprintf(apiSpecialRole, role_code)
+func (c *AuthenticationClient) DeleteRole(role_id string) (resp common.BaseResponse, err error) {
+	uri := fmt.Sprintf(apiSpecialRole, role_id)
 	body, err := c.SendHttpRequest(uri, http.MethodDelete, nil)
 	if err != nil {
 		return
@@ -42,8 +42,8 @@ func (c *AuthenticationClient) DeleteRole(role_code string) (resp common.BaseRes
 }
 
 // 更新角色
-func (c *AuthenticationClient) UpdateRole(role_code string, params *param.UpdateRole) (resp common.BaseResponse, err error) {
-	uri := fmt.Sprintf(apiSpecialRole, role_code)
+func (c *AuthenticationClient) UpdateRole(role_id string, params *param.UpdateRole) (resp common.BaseResponse, err error) {
+	uri := fmt.Sprintf(apiSpecialRole, role_id)
 	body, err := c.SendHttpRequest(uri, http.MethodPut, params)
 	if err != nil {
 		return
@@ -56,13 +56,13 @@ func (c *AuthenticationClient) UpdateRole(role_code string, params *param.Update
 }
 
 // 获取指定角色
-func (c *AuthenticationClient) GetRole(role_code string) (resp dto.RoleDto, err error) {
-	if role_code == "" {
-		err = errors.New("role_code is required")
+func (c *AuthenticationClient) GetRole(role_id string) (resp dto.RoleDto, err error) {
+	if role_id == "" {
+		err = errors.New("role_id is required")
 		return
 	}
 
-	uri := fmt.Sprintf(apiSpecialRole, role_code)
+	uri := fmt.Sprintf(apiSpecialRole, role_id)
 	body, err := c.SendHttpRequest(uri, http.MethodGet, nil)
 	if err != nil {
 		return

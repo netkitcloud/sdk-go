@@ -147,3 +147,22 @@ func (c *AuthenticationClient) OrgUnbindMember(organization_id string, params *d
 	}
 	return
 }
+
+// 获取指定组织下所有用户信息
+func (c *AuthenticationClient) GetOrganizationUsers(organization_id string) (resp dto.OrganizationUserDto, err error) {
+	if organization_id == "" {
+		err = errors.New("organization_id is required")
+		return
+	}
+
+	uri := fmt.Sprintf(apiSpecialOrganizationMember, organization_id)
+	body, err := c.SendHttpRequest(uri, http.MethodGet, nil)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}

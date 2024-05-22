@@ -3,7 +3,6 @@ package param
 import "github.com/netkitcloud/sdk-go/common"
 
 type CreateAction struct {
-	ResourceCode string `json:"resource_code" validate:"required"`
 	Code         string `json:"code" validate:"required"`
 	Description  string `json:"description,omitempty"`
 }

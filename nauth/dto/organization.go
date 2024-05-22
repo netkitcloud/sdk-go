@@ -24,6 +24,12 @@ type OrganizationDto struct {
 	common.BaseResponse
 }
 
+// 获取指定组织下所有用户信息
+type OrganizationUserDto struct {
+	Data []User
+	common.BaseResponse
+}
+
 type ListOrganizationDto struct {
 	Data []Organization
 	common.BaseListResponse
