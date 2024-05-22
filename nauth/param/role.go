@@ -5,12 +5,14 @@ import "github.com/netkitcloud/sdk-go/common"
 type UpdateRole struct {
 	Description string `json:"description,omitempty"`
 	Status      bool   `json:"status,omitempty"`
+	ActionIDs   []uint `json:"action_ids"` // 更新授权资源列表（覆盖之前的权限信息）
 }
 
 type CreateRole struct {
 	Code        string `json:"code" validate:"required"`
 	Description string `json:"description,omitempty"`
 	Status      bool   `json:"status,omitempty"`
+	ActionIDs   []uint `json:"action_ids"` // 授权资源列表
 }
 
 type QueryRole struct {
