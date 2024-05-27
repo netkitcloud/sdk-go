@@ -40,3 +40,8 @@ type DepartmentUser struct {
 	User       User       `json:"user"`
 	Department Department `json:"department"`
 }
+
+type ListDepartmentUserDto struct {
+	Data []DepartmentUser
+	common.BaseListResponse
+}

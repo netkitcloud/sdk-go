@@ -47,3 +47,8 @@ type OrganizationUser struct {
 	User         User         `json:"user"`
 	Organization Organization `json:"organization"`
 }
+
+type ListOrganizationUserDto struct {
+	Data []OrganizationUser
+	common.BaseListResponse
+}
