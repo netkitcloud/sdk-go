@@ -111,7 +111,7 @@ func (c *AuthenticationClient) OrgAddMember(organization_id string, params *dto.
 }
 
 // 在组织下绑定成员
-func (c *AuthenticationClient) OrgBindMember(organization_id string, params *dto.OrganizationUser) (resp common.BaseResponse, err error) {
+func (c *AuthenticationClient) OrgBindMember(organization_id string, params *param.OrganizationUser) (resp common.BaseResponse, err error) {
 	if organization_id == "" {
 		err = errors.New("organization_id is required")
 		return
@@ -130,7 +130,7 @@ func (c *AuthenticationClient) OrgBindMember(organization_id string, params *dto
 }
 
 // 在组织下解绑成员
-func (c *AuthenticationClient) OrgUnbindMember(organization_id string, params *dto.OrganizationUser) (resp common.BaseResponse, err error) {
+func (c *AuthenticationClient) OrgUnbindMember(organization_id string, params *param.OrganizationUser) (resp common.BaseResponse, err error) {
 	if organization_id == "" {
 		err = errors.New("organization_id is required")
 		return
@@ -157,6 +157,26 @@ func (c *AuthenticationClient) GetOrganizationUsers(organization_id string) (res
 
 	uri := fmt.Sprintf(apiSpecialOrganizationMember, organization_id)
 	body, err := c.SendHttpRequest(uri, http.MethodGet, nil)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}
+
+// 设置指定组织下用户是否为组织管理员
+func (c *AuthenticationClient) SetOrganizationUsersIsmanage(organization_id string,
+	params *param.OrganizationUserManagerForm) (resp common.BaseResponse, err error) {
+	if organization_id == "" {
+		err = errors.New("organization_id is required")
+		return
+	}
+
+	uri := fmt.Sprintf(apiSpecialOrganizationMemberManager, organization_id)
+	body, err := c.SendHttpRequest(uri, http.MethodPut, params)
 	if err != nil {
 		return
 	}

@@ -21,3 +21,14 @@ type QueryDepartment struct {
 	Status         bool   `json:"status,omitempty" form:"status"`
 	OrganizationID uint   `json:"organization_id,omitempty" form:"organization_id"`
 }
+
+// 组织下绑定/解绑用户参数
+type DepartmentUser struct {
+	UserUIDs []string `json:"user_uids" form:"user_uids"`
+}
+
+// DepartmentUserManagerForm 设置用户部门管理员表单
+type DepartmentUserManagerForm struct {
+	UserUID   string `json:"user_uid"`
+	IsManager bool   `json:"is_manager"`
+}

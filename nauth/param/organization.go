@@ -33,3 +33,9 @@ type QueryOrganization struct {
 type OrganizationUser struct {
 	UserUIDs []string `json:"user_uids" form:"user_uids"`
 }
+
+// OrganizationUserManagerForm 设置用户组织管理员表单
+type OrganizationUserManagerForm struct {
+	UserUID   string `json:"user_uid"`
+	IsManager bool   `json:"is_manager"`
+}
