@@ -8,6 +8,7 @@ import (
 
 	"github.com/netkitcloud/sdk-go/common"
 	"github.com/netkitcloud/sdk-go/nauth/dto"
+	"github.com/netkitcloud/sdk-go/nauth/param"
 	"github.com/valyala/fastjson"
 )
 
@@ -85,7 +86,7 @@ func (cli *AuthenticationAdmin) DeleteUser(userId string) (*common.BaseResponse,
 	return &result, nil
 }
 
-func (cli *AuthenticationAdmin) ListUser(pagination common.PaginationParams) (userListResp dto.UserListDto, err error) {
+func (cli *AuthenticationAdmin) ListUser(pagination param.QueryUsers) (userListResp dto.UserListDto, err error) {
 	body, err := cli.SendHttpRequest("/users", http.MethodGet, pagination)
 	if err != nil {
 		return
