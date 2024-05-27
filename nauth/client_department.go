@@ -130,14 +130,14 @@ func (c *AuthenticationClient) DepUnbindMember(department_id string, params *par
 }
 
 // 获取指定组织下所有用户信息
-func (c *AuthenticationClient) GetDepartmentUsers(department_id string) (resp dto.DepartmentUser, err error) {
+func (c *AuthenticationClient) GetDepartmentUsers(department_id string, pagination common.PaginationParams) (resp dto.ListDepartmentUserDto, err error) {
 	if department_id == "" {
 		err = errors.New("department_id is required")
 		return
 	}
 
 	uri := fmt.Sprintf(apiSpecialDepartmentMember, department_id)
-	body, err := c.SendHttpRequest(uri, http.MethodGet, nil)
+	body, err := c.SendHttpRequest(uri, http.MethodGet, pagination)
 	if err != nil {
 		return
 	}
