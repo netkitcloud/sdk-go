@@ -43,6 +43,7 @@ type AddUserDto struct {
 	Email    string `json:"email,omitempty"`
 	Phone    string `json:"phone,omitempty"`
 	Password string `json:"password,omitempty"`
+	RoleCode string `json:"role_code,omitempty"`
 	UserProfile
 }
 
