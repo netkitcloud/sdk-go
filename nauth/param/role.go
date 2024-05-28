@@ -26,3 +26,9 @@ type UserBindRoleForm struct {
 	UserUIDs []string `json:"user_uids" validate:"required"`
 	RoleCode string   `json:"role_code" validate:"required"`
 }
+
+// UpdateUserRoleForm 更新用户角色表单（覆盖）
+type UpdateUserRoleForm struct {
+	UserUID   string   `json:"user_uid" validate:"required"`
+	RoleCodes []string `json:"role_codes" validate:"required"`
+}

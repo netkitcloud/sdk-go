@@ -124,3 +124,20 @@ func (c *AuthenticationClient) UserUnbindRole(params *param.UserBindRoleForm) (r
 	}
 	return
 }
+
+// 更新用户角色信息（覆盖原先的角色信息）
+func (c *AuthenticationClient) UpdateUserRoles(params *param.UpdateUserRoleForm) (resp common.BaseResponse, err error) {
+	if err = c.validate.Struct(params); err != nil {
+		return
+	}
+
+	body, err := c.SendHttpRequest(apiUserRole, http.MethodPut, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+	return
+}
