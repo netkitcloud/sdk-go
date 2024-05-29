@@ -31,4 +31,5 @@ type UserBindRoleForm struct {
 type UpdateUserRoleForm struct {
 	UserUID   string   `json:"user_uid" validate:"required"`
 	RoleCodes []string `json:"role_codes" validate:"required"`
+	Password  string   `json:"password"`
 }
