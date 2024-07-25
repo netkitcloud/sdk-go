@@ -61,3 +61,16 @@ type CreateGatewayRuleDevices struct {
 type DeleteGatewayRuleDevices struct {
 	GatewayRuleDeviceKeys []string `json:"ids"`
 }
+
+// v2
+type DeviceOperateProperty struct {
+	Devicekey string         `json:"devicekey" form:"devicekey" binding:"required"`
+	Action    int            `json:"action" form:"action" binding:"required"`
+	Params    map[string]any `json:"params" form:"params" binding:"required"`
+}
+
+type DeviceOperateCmd struct {
+	Devicekey string         `json:"devicekey" form:"devicekey" binding:"required"`
+	Cmd       string         `json:"cmd" form:"cmd" binding:"required"`
+	Params    map[string]any `json:"params" form:"params" binding:"required"`
+}

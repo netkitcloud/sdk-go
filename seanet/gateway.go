@@ -94,3 +94,38 @@ func (c *SeanetClient) ListGatewaySubDevice(gatewaySn string, pagination common.
 
 	return
 }
+
+// v2 zhiyi
+func (c *SeanetClient) DeviceOperateProperty(params *param.DeviceOperateProperty) (resp common.BaseResponse, err error) {
+	if err = c.validate.Struct(params); err != nil {
+		return
+	}
+
+	body, err := c.SendHttpRequest(apiDeviceOperateProperty, http.MethodPost, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+
+	return
+}
+
+func (c *SeanetClient) DeviceOperateCmd(params *param.DeviceOperateCmd) (resp common.BaseResponse, err error) {
+	if err = c.validate.Struct(params); err != nil {
+		return
+	}
+
+	body, err := c.SendHttpRequest(apiDeviceOperateCmd, http.MethodPost, params)
+	if err != nil {
+		return
+	}
+
+	if err = common.ParserDto(body, &resp); err != nil {
+		return
+	}
+
+	return
+}
