@@ -28,4 +28,8 @@ const (
 	// gateway rule
 	apiGatewayRule        = "/gateway/rule"
 	apiGatewayRuleDevices = "/gateway/rule/%s/device"
+
+	// v2
+	apiDeviceOperateProperty = "/device/operate/property"
+	apiDeviceOperateCmd      = "/device/operate/cmd"
 )
