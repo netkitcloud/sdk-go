@@ -75,3 +75,12 @@ type CmdDeviceDto struct {
 	Topic   string `json:"topic"`
 	Content string `json:"content" validate:"required"` // 多条指令，按顺序发送给设备
 }
+
+type Property struct {
+	Ts  string `json:"ts"`
+	Val any    `json:"val"`
+}
+type GetPropertyDto struct {
+	Data []Property
+	common.BaseListResponse
+}

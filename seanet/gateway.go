@@ -95,7 +95,7 @@ func (c *SeanetClient) ListGatewaySubDevice(gatewaySn string, pagination common.
 	return
 }
 
-// v2 zhiyi
+// v2
 func (c *SeanetClient) DeviceOperateProperty(params *param.DeviceOperateProperty) (resp common.BaseResponse, err error) {
 	if err = c.validate.Struct(params); err != nil {
 		return
