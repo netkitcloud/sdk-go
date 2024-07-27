@@ -15,7 +15,7 @@ func ParserDto[T any](body []byte, dto *T) (err error) {
 	if err != nil {
 		return
 	}
-	fmt.Println("body:", string(body))
+	// fmt.Println("body:", string(body))
 
 	err = json.Unmarshal(body, &dto)
 	if err != nil {
