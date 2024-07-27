@@ -34,5 +34,5 @@ const (
 	apiDeviceOperateCmd      = "/device/operate/cmd"
 
 	// property
-	apiDeviceProperty = "/device/%s/property/%s"
+	apiDeviceProperty = "/device/%s/getproperty/%s"
 )

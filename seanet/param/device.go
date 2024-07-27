@@ -76,10 +76,10 @@ type DeviceOperateCmd struct {
 }
 
 type GetPropertyQuery struct {
-	Start string `json:"start" form:"start" binding:"omitempty"`
-	End   string `json:"end" form:"end" binding:"omitempty"`
-	Desc  string `json:"desc" form:"desc" binding:"omitempty"`
-	Limit string `json:"limit" form:"limit" binding:"omitempty"`
+	Start string `json:"start,omitempty" form:"start" binding:"omitempty"`
+	End   string `json:"end,omitempty" form:"end" binding:"omitempty"`
+	Desc  string `json:"desc,omitempty" form:"desc" binding:"omitempty"`
+	Limit string `json:"limit,omitempty" form:"limit" binding:"omitempty"`
 }
 
 type GetProperty struct {

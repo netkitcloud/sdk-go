@@ -5,11 +5,12 @@ import (
 	"net/http"
 
 	"github.com/netkitcloud/sdk-go/common"
+	"github.com/netkitcloud/sdk-go/seanet/dto"
 	"github.com/netkitcloud/sdk-go/seanet/param"
 )
 
 // 获取设备列表
-func (c *SeanetClient) GetProperty(params *param.GetProperty) (resp common.BaseDataResponse, err error) {
+func (c *SeanetClient) GetProperty(params *param.GetProperty) (resp dto.GetPropertyDto, err error) {
 	if err = c.validate.Struct(params); err != nil {
 		return
 	}
