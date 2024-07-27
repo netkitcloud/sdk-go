@@ -74,3 +74,16 @@ type DeviceOperateCmd struct {
 	Cmd       string         `json:"cmd" form:"cmd" binding:"required"`
 	Params    map[string]any `json:"params" form:"params" binding:"required"`
 }
+
+type GetPropertyQuery struct {
+	Start string `json:"start" form:"start" binding:"omitempty"`
+	End   string `json:"end" form:"end" binding:"omitempty"`
+	Desc  string `json:"desc" form:"desc" binding:"omitempty"`
+	Limit string `json:"limit" form:"limit" binding:"omitempty"`
+}
+
+type GetProperty struct {
+	Devicekey string
+	Property  string
+	Query     GetPropertyQuery
+}

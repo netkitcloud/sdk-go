@@ -32,4 +32,7 @@ const (
 	// v2
 	apiDeviceOperateProperty = "/device/operate/property"
 	apiDeviceOperateCmd      = "/device/operate/cmd"
+
+	// property
+	apiDeviceProperty = "/device/%s/property/%s"
 )
