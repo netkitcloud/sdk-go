@@ -11,17 +11,21 @@ import (
 	"github.com/valyala/fastjson"
 )
 
-func (c *NIPClient) CreateDevice(dto *dto.CreateDeviceDto) (*dto.Device, error) {
-	if err := c.validate.Struct(dto); err != nil {
+func (c *NIPClient) CreateDevice(dtop *dto.CreateDeviceDto) (*dto.Device, error) {
+	// create and return that device
+	if err := c.validate.Struct(dtop); err != nil {
 		return nil, err
 	}
 
-	body, err := c.SendHttpRequest(apiDevice, http.MethodPost, dto)
+	_, err := c.SendHttpRequest(apiDevice, http.MethodPost, dtop)
 	if err != nil {
 		return nil, err
 	}
 
-	return c.responseDevice(body)
+	return c.GetDevice(&dto.GetDeviceDto{
+		Productkey: dtop.Productkey,
+		Devicekey:  dtop.Devicekey,
+	})
 }
 
 func (c *NIPClient) GetDevice(dto *dto.GetDeviceDto) (*dto.Device, error) {
@@ -108,7 +112,7 @@ func (c *NIPClient) responseDevice(b []byte) (*dto.Device, error) {
 		return nil, err
 	}
 
-	if !v.GetBool("status") {
+	if !v.GetBool("status") || v.GetObject("data") == nil {
 		msg := v.GetStringBytes("message")
 		return nil, errors.New(string(msg))
 	}
