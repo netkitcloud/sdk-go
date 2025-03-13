@@ -42,6 +42,10 @@ func (c *AuthenticationClient) VerifyAction(params *param.QueryVerifyAction) (re
 		return
 	}
 
+	if params.TenantID == "" {
+		params.TenantID = c.options.Tenant
+	}
+
 	body, err := c.SendHttpRequest(apiVerifyAction, http.MethodGet, params)
 	if err != nil {
 		return
