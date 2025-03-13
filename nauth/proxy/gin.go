@@ -22,6 +22,29 @@ const (
 	ResetAccessKey         Action = "ResetAccessKey"
 	AddAccessKeyComment    Action = "AddAccessKeyComment"
 	UpdateAccessKeyComment Action = "UpdateAccessKeyComment"
+
+	CreateOrganization Action = "CreateOrganization"
+	DeleteOrganization Action = "DeleteOrganization"
+	UpdateOrganization Action = "UpdateOrganization"
+	GetOrganization    Action = "GetOrganization"
+	ListOrganization   Action = "ListOrganization"
+
+	OrgAddMember                 Action = "OrgAddMember"
+	OrgBindMember                Action = "OrgBindMember"
+	OrgUnbindMember              Action = "OrgUnbindMember"
+	GetOrganizationUsers         Action = "GetOrganizationUsers"
+	SetOrganizationUsersIsmanage Action = "SetOrganizationUsersIsmanage"
+
+	CreateDepartment Action = "CreateDepartment"
+	DeleteDepartment Action = "DeleteDepartment"
+	UpdateDepartment Action = "UpdateDepartment"
+	GetDepartment    Action = "GetDepartment"
+	ListDepartment   Action = "ListDepartment"
+
+	DepBindMember              Action = "DepBindMember"
+	DepUnbindMember            Action = "DepUnbindMember"
+	GetDepartmentUsers         Action = "GetDepartmentUsers"
+	SetDepartmentUsersIsmanage Action = "SetDepartmentUsersIsmanage"
 )
 
 var ActionFunc ActionFuncMap[Action, NormalProxyFunc] = map[Action]NormalProxyFunc{
@@ -31,6 +54,29 @@ var ActionFunc ActionFuncMap[Action, NormalProxyFunc] = map[Action]NormalProxyFu
 	ResetAccessKey:         ginResetAccessKey,
 	AddAccessKeyComment:    ginAddAccessKeyComment,
 	UpdateAccessKeyComment: ginUpdateAccessKeyComment,
+
+	CreateOrganization: ginCreateOrganization,
+	DeleteOrganization: ginDeleteOrganization,
+	UpdateOrganization: ginUpdateOrganization,
+	GetOrganization:    ginGetOrganization,
+	ListOrganization:   ginListOrganization,
+
+	OrgAddMember:                 ginOrgAddMember,
+	OrgBindMember:                ginOrgBindMember,
+	OrgUnbindMember:              ginOrgUnbindMember,
+	GetOrganizationUsers:         ginGetOrganizationUsers,
+	SetOrganizationUsersIsmanage: ginSetOrganizationUsersIsmanage,
+
+	CreateDepartment: ginCreateDepartment,
+	DeleteDepartment: ginDeleteDepartment,
+	UpdateDepartment: ginUpdateDepartment,
+	GetDepartment:    ginGetDepartment,
+	ListDepartment:   ginListDepartment,
+
+	DepBindMember:              ginDepBindMember,
+	DepUnbindMember:            ginDepUnbindMember,
+	GetDepartmentUsers:         ginGetDepartmentUsers,
+	SetDepartmentUsersIsmanage: ginSetDepartmentUsersIsmanage,
 }
 
 func GinRouterClientProxy(action Action, options *nauth.AuthenticationClientOptions) func(*gin.Context) {
