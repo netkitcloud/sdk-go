@@ -92,7 +92,7 @@ func (c *AuthenticationClient) ListOrganization(pagination param.QueryOrganizati
 }
 
 // 在组织下添加成员
-func (c *AuthenticationClient) OrgAddMember(organization_id string, params *dto.AddUserDto) (resp common.BaseResponse, err error) {
+func (c *AuthenticationClient) OrgAddMember(organization_id string, params *dto.AddUserDto) (resp dto.User, err error) {
 	if organization_id == "" {
 		err = errors.New("organization_id is required")
 		return
