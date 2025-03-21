@@ -24,6 +24,11 @@ type OrganizationDto struct {
 	common.BaseResponse
 }
 
+type AddOrganizationMemberDto struct {
+	Data User
+	common.BaseResponse
+}
+
 // 获取指定组织下所有用户信息
 type OrganizationUserDto struct {
 	Data []User
