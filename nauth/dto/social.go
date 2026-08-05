@@ -59,6 +59,22 @@ type SocialLoginRespDto struct {
 	} `json:"data,omitempty"`
 }
 
+type WxOfficeAuthURLRespDto struct {
+	common.BaseResponse
+	Data WxOfficeAuthURL `json:"data,omitempty"`
+}
+
+type WxOfficeAuthURL struct {
+	AuthCodeURL string `json:"auth_code_url,omitempty"`
+	State       string `json:"state,omitempty"`
+	ExpiresIn   int    `json:"expires_in,omitempty"`
+}
+
+type WxOfficeCallbackDto struct {
+	Code  string `json:"code,omitempty"`
+	State string `json:"state,omitempty"`
+}
+
 type SocialBindDto struct {
 	// 若需要指定用户绑定时传入的字段
 	UID string `json:"uid,omitempty"`
